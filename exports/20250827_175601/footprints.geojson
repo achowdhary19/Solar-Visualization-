@@ -1,9 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "footprints",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "bbl": "100001" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -73.9853, 40.731 ], [ -73.985, 40.731 ], [ -73.985, 40.7307 ], [ -73.9853, 40.7307 ], [ -73.9853, 40.731 ] ] ] } },
-{ "type": "Feature", "properties": { "bbl": "100002" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -73.9848, 40.7309 ], [ -73.9845, 40.7309 ], [ -73.9845, 40.7306 ], [ -73.9848, 40.7306 ], [ -73.9848, 40.7309 ] ] ] } }
-]
-}

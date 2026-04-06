@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_0663870c6f1a1417fdaf196d88dd4a25 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_0663870c6f1a1417fdaf196d88dd4a25" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_0663870c6f1a1417fdaf196d88dd4a25 = L.map(
+                "map_0663870c6f1a1417fdaf196d88dd4a25",
+                {
+                    center: [40.72392228481094, -73.98701516591248],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 14,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f514e78e5698028dec5f01827f2ba1d9 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f514e78e5698028dec5f01827f2ba1d9.addTo(map_0663870c6f1a1417fdaf196d88dd4a25);
+        
+    
+            var marker_548f245b8217c332c9ca2e1381b27d88 = L.marker(
+                [40.72392228481094, -73.98701516591248],
+                {
+}
+            ).addTo(map_0663870c6f1a1417fdaf196d88dd4a25);
+        
+    
+        var popup_0a5f3fbf5f0196321835fbcf8e8ad98e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_e5606d3893d2b1c7bd00c4b39d26d1ee = $(`<div id="html_e5606d3893d2b1c7bd00c4b39d26d1ee" style="width: 100.0%; height: 100.0%;"><b>Irradiance last 14 days</b><br><svg width="180" height="40" viewBox="0 0 180 40"><polyline points="5,35 18,35 31,35 44,35 57,35 70,35 83,35 96,35 109,35 122,35 135,35 148,35 161,35 175,35" fill="none" stroke="#1f77b4" stroke-width="2"/></svg><br>2026-03-21: 4.10 kWh/m^2<br>2026-03-22: 4.10 kWh/m^2<br>2026-03-23: 4.10 kWh/m^2<br>2026-03-24: 4.10 kWh/m^2<br>2026-03-25: 4.10 kWh/m^2<br>2026-03-26: 4.10 kWh/m^2<br>2026-03-27: 4.10 kWh/m^2<br>2026-03-28: 4.10 kWh/m^2<br>2026-03-29: 4.10 kWh/m^2<br>2026-03-30: 4.10 kWh/m^2<br>2026-03-31: 4.10 kWh/m^2<br>2026-04-01: 4.10 kWh/m^2<br>2026-04-02: 4.10 kWh/m^2<br>2026-04-03: 4.10 kWh/m^2</div>`)[0];
+                popup_0a5f3fbf5f0196321835fbcf8e8ad98e.setContent(html_e5606d3893d2b1c7bd00c4b39d26d1ee);
+            
+        
+
+        marker_548f245b8217c332c9ca2e1381b27d88.bindPopup(popup_0a5f3fbf5f0196321835fbcf8e8ad98e)
+        ;
+
+        
+    
+</script>
+</html>
