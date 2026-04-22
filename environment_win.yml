@@ -1,0 +1,21 @@
+name: pv_env
+channels:
+  - conda-forge
+channel_priority: strict
+dependencies:
+  - python=3.11
+  - geopandas>=0.14
+  - gdal=3.8
+  - rasterio=1.3
+  - fiona=1.9
+  - shapely>=2.0
+  - pyproj>=3.6
+  - rtree
+  - libspatialindex
+  - pandas>=2.0
+  - requests>=2.31
+  - matplotlib>=3.8
+  - folium>=0.16
+  - branca>=0.7
+  - jupyterlab>=4
+  - ipykernel
