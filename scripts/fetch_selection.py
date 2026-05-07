@@ -8,6 +8,15 @@ PLUTO_GEO_ID = "64uk-42ks"
 PLUTO_URL = f"https://data.cityofnewyork.us/resource/{PLUTO_GEO_ID}.geojson"
 APP_TOKEN = os.getenv("NYC_SODA_APP_TOKEN")
 HEADERS = {"X-App-Token": APP_TOKEN, "Accept": "application/json"} if APP_TOKEN else {"Accept": "application/json"}
+
+def normalize_bbl(series):
+    return (
+        series.astype(str)
+        .str.replace(".0", "", regex=False)   # remove float artifact
+        .str.strip()
+        .str.split(".").str[0]               # remove any remaining decimals
+        .str.zfill(10)                      # enforce 10-digit format
+    )
 def try_query(geom_col: str | None):
     params = {"$select": "*", "$limit": 50000}
     if geom_col:
@@ -27,11 +36,35 @@ def fallback_mock():
     from shapely.geometry import Polygon
     polys = [Polygon([[W_LON+0.0010, N_LAT-0.0010],[W_LON+0.0016, N_LAT-0.0010],[W_LON+0.0016, N_LAT-0.0016],[W_LON+0.0010, N_LAT-0.0016],[W_LON+0.0010, N_LAT-0.0010]])]
     gdf = gpd.GeoDataFrame({"bbl":["100001"],"address":["Mock 1"],"bldgclass":["C4"],"numfloors":[6],"unitsres":[20]}, geometry=polys, crs="EPSG:4326"); return gdf
+
+
 def main():
-    try: gdf = fetch()
-    except Exception as e: print("[WARN] Selection fetch failed:", e); gdf = fallback_mock()
-    gdf = gdf.rename(columns={c: c.lower() for c in gdf.columns}); gdf.to_file("all_walkups_6story.geojson", driver="GeoJSON")
-    keep = [c for c in ["bbl","address","bldgclass","numfloors","unitsres","res_units","units","yearbuilt","latitude","longitude"] if c in gdf.columns]
-    if "bbl" not in keep and "bbl" in gdf.columns: keep = ["bbl"] + keep
-    gdf[keep].to_csv("all_walkups_6story.csv", index=False); print("Wrote all_walkups_6story.csv and all_walkups_6story.geojson")
-if __name__ == "__main__": main()
+    try:
+        gdf = fetch()
+    except Exception as e:
+        print("[WARN] Selection fetch failed:", e)
+        gdf = fallback_mock()
+
+    # normalize column names
+    gdf = gdf.rename(columns={c: c.lower() for c in gdf.columns})
+
+    # ✅ FIX: normalize BBL BEFORE saving anything
+    if "bbl" in gdf.columns:
+        gdf["bbl"] = normalize_bbl(gdf["bbl"])
+
+    # write geojson (now clean)
+    gdf.to_file("all_walkups_6story.geojson", driver="GeoJSON")
+
+    keep = [c for c in [
+        "bbl","address","bldgclass","numfloors",
+        "unitsres","res_units","units","yearbuilt",
+        "latitude","longitude"
+    ] if c in gdf.columns]
+
+    if "bbl" not in keep and "bbl" in gdf.columns:
+        keep = ["bbl"] + keep
+
+    # write csv (also clean)
+    gdf[keep].to_csv("all_walkups_6story.csv", index=False)
+
+    print("Wrote all_walkups_6story.csv and all_walkups_6story.geojson")
