@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 import os, requests, pandas as pd, geopandas as gpd
-N_LAT = float(os.getenv("PV_N_LAT", "40.73230"))
-S_LAT = float(os.getenv("PV_S_LAT", "40.71700"))
-W_LON = float(os.getenv("PV_W_LON", "-73.98660"))
-E_LON = float(os.getenv("PV_E_LON", "-73.97400"))
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+PARENT_DIR = SCRIPT_DIR.parent
+
+N_LAT = float(os.getenv("PV_N_LAT", "40.7358876957036"))
+S_LAT = float(os.getenv("PV_S_LAT", "40.71195687391828"))
+W_LON = float(os.getenv("PV_W_LON", "-74.00188877257987"))
+E_LON = float(os.getenv("PV_E_LON", "-73.9721415592451"))
 PLUTO_GEO_ID = "64uk-42ks"
 PLUTO_URL = f"https://data.cityofnewyork.us/resource/{PLUTO_GEO_ID}.geojson"
 APP_TOKEN = os.getenv("NYC_SODA_APP_TOKEN")
@@ -11,11 +16,14 @@ HEADERS = {"X-App-Token": APP_TOKEN, "Accept": "application/json"} if APP_TOKEN 
 
 def normalize_bbl(series):
     return (
-        series.astype(str)
-        .str.replace(".0", "", regex=False)   # remove float artifact
+        series
+        .astype(str)
+        .str.replace(r"\.0$", "", regex=True)  # remove trailing .0 only
         .str.strip()
-        .str.split(".").str[0]               # remove any remaining decimals
-        .str.zfill(10)                      # enforce 10-digit format
+        .str.replace(r"\.0$", "", regex=True)
+        .str.split(".").str[0]
+        .str.replace(r"\D", "", regex=True)    # remove any stray non-digits
+        .str.zfill(10)                         # enforce NYC 10-digit BBL
     )
 def try_query(geom_col: str | None):
     params = {"$select": "*", "$limit": 50000}
@@ -53,7 +61,7 @@ def main():
         gdf["bbl"] = normalize_bbl(gdf["bbl"])
 
     # write geojson (now clean)
-    gdf.to_file("all_walkups_6story.geojson", driver="GeoJSON")
+    gdf.to_file(PARENT_DIR / "all_walkups_6story.geojson", driver="GeoJSON")
 
     keep = [c for c in [
         "bbl","address","bldgclass","numfloors",
@@ -65,6 +73,8 @@ def main():
         keep = ["bbl"] + keep
 
     # write csv (also clean)
-    gdf[keep].to_csv("all_walkups_6story.csv", index=False)
-
+    gdf[keep].to_csv(PARENT_DIR / "all_walkups_6story.csv", index=False)
+    
     print("Wrote all_walkups_6story.csv and all_walkups_6story.geojson")
+if __name__ == "__main__":
+    main()
