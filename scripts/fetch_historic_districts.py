@@ -1,26 +1,61 @@
 #!/usr/bin/env python3
-import json, urllib.parse, urllib.request
+
+import json
+import urllib.parse
+import urllib.request
 from pathlib import Path
-from shapely.geometry import shape, mapping
-from scripts.common_bbox import study_area_bbox, study_area_polygon
-DATASET = "skyk-mpzq"; BASE = "https://data.cityofnewyork.us/resource/"
-def main():
-    bbox = study_area_bbox()
-    where = "within_box(the_geom,{},{},{},{})".format(bbox[1], bbox[0], bbox[3], bbox[2])
-    params = {"$select":"*", "$where": where, "$limit": 50000}
-    url = BASE + DATASET + ".geojson?" + urllib.parse.urlencode(params)
-    try:
-        with urllib.request.urlopen(url) as r: gj = json.loads(r.read().decode("utf-8"))
-    except Exception as e:
-        print("historic districts fetch failed:", e); return
-    poly = study_area_polygon(); out_feats = []
-    for f in gj.get("features", []):
-        try: geom = shape(f.get("geometry"))
-        except Exception: continue
-        inter = geom.intersection(poly)
-        if inter.is_empty: continue
-        out_feats.append({"type":"Feature","geometry":mapping(inter),"properties":dict(f.get("properties") or {})})
-    out = {"type":"FeatureCollection","features":out_feats}
-    outp = Path("DATA")/"zola"/"historic_districts.geojson"; outp.parent.mkdir(parents=True, exist_ok=True); outp.write_text(json.dumps(out), encoding="utf-8")
-    print("wrote", outp, "features", len(out_feats))
-if __name__ == "__main__": main()
+
+DATASET = "skyk-mpzq"
+BASE = "https://data.cityofnewyork.us/resource/"
+
+N_LAT = 40.807402
+S_LAT = 40.702263
+W_LON = -74.016405
+E_LON = -73.963928
+
+# bigger 
+# N_LAT =  40.713896
+# S_LAT =40.648803
+# W_LON =  -74.000534
+# E_LON = -73.901401
+
+
+bbox = [W_LON, S_LAT, E_LON, N_LAT]
+
+
+
+where = "within_box(the_geom,{},{},{},{})".format(
+    bbox[1],
+    bbox[0],
+    bbox[3],
+    bbox[2]
+)
+
+params = {
+    "$select": "*",
+    "$where": where,
+    "$limit": 50000
+}
+
+url = BASE + DATASET + ".geojson?" + urllib.parse.urlencode(params)
+
+try:
+    with urllib.request.urlopen(url) as r:
+        gj = json.loads(r.read().decode("utf-8"))
+
+except Exception as e:
+    print("historic districts fetch failed:", e)
+
+out = {
+    "type": "FeatureCollection",
+    "features": gj.get("features", [])
+}
+
+outp = Path("historic_districts.geojson")
+
+outp.write_text(
+    json.dumps(out),
+    encoding="utf-8"
+)
+
+print("wrote", outp, "features", len(out["features"]))
