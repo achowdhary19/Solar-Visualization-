@@ -1,0 +1,48 @@
+[project]
+name = "solar-visualization"
+version = "0.1.0"
+channels = ["conda-forge"]
+platforms = ["win-64", "osx-64", "linux-64"] # Fully cross-platform
+
+[dependencies]
+python = "3.11.*"
+# The exact working geospatial stack pulled securely as pre-compiled binaries
+geopandas = ">=0.14"
+pyogrio = "*"
+shapely = ">=2.0"
+pyproj = ">=3.6"
+fiona = "1.9.*"
+gdal = "3.8.*"
+folium = ">=0.16"
+branca = ">=0.7"
+requests = ">=2.31"
+pandas = ">=2.0"
+matplotlib = ">=3.8"
+jupyterlab = ">=4"
+
+[tasks]
+# Individual Stages
+stage0 = "python -m scripts.stage0_aoi"
+stage2 = "python -m scripts.fetch_footprints"
+stage3 = "python -m scripts.stage3_pv_sizing"
+
+# Stage 4: Styled Map (Using Pixi variables to break lines cleanly across OS platforms)
+stage4 = """
+python -m scripts.stage4_style 
+  --out OUT/maps/irradiance_timeseries_map.html 
+  --pv-polys OUT/pv_canopy_footprints.geojson 
+  --pv-centroids OUT/pv_sites_centroids.geojson 
+  --footprints OUT/footprints.geojson 
+  --pluto DATA/pluto.geojson 
+  --zola DATA/zola_zoning.geojson 
+  --aoi DATA/aoi.geojson 
+  --title "LES PV & Irradiance Map" 
+  --basemap-url "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+  --basemap-attrib "Map data: OpenStreetMap contributors"
+"""
+
+# The Complete Pipeline Workflow
+pipeline = { depends_on = ["stage0", "stage2", "stage3", "stage4"] }
+
+# Interactive Environment Launchers
+lab = "jupyter lab"
