@@ -12,6 +12,9 @@
 # Sensitive files
 secrets.h
 
+# Personal Workspace and Drafts
+/local_scratchpad
+
 # macOS system files
 .DS_Store
 ._*
