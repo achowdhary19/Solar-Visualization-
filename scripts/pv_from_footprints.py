@@ -122,7 +122,7 @@ def main():
 
     out = pv[[c for c in cols if c in pv.columns]].copy()
 
-    out.to_csv("pv_footprints_by_building.csv", index=False)
+    out.to_csv("pv_canopy_footprints.csv", index=False)
 
     # -------------------------
     # GEOJSON OUTPUT (FOOTPRINTS WITH PV)
