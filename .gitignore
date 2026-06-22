@@ -18,3 +18,12 @@ secrets.h
 # macOS system files
 .DS_Store
 ._*
+
+
+#generated outputs 
+backup_outputs/
+#maps/solar_map.html
+pv_canopy_centroids.csv
+pv_canopy_centroids.geojson
+pv_canopy_footprints.geojson
+pv_footprints_by_building.csv
