@@ -22,8 +22,20 @@ secrets.h
 
 #generated outputs 
 backup_outputs/
-#maps/solar_map.html
+
 pv_canopy_centroids.csv
 pv_canopy_centroids.geojson
+
+pv_canopy_footprints.csv
 pv_canopy_footprints.geojson
-pv_footprints_by_building.csv
+
+# pv_footprints_by_building.csv
+
+footprints.geojson
+
+all_walkups_6story_poly.csv
+all_walkups_6story_poly.geojson
+
+all_walkups_6story.csv
+all_walkups_6story.geojson
+
