@@ -1,0 +1,31 @@
+[workspace]
+name = "solar-visualization"
+version = "0.1.0"
+channels = ["conda-forge"]
+platforms = ["win-64", "osx-64", "linux-64"] # Fully cross-platform
+
+[dependencies]
+python = "3.11.*"
+# The exact working geospatial stack pulled securely as pre-compiled binaries
+geopandas = ">=0.14"
+pyogrio = "*"
+shapely = ">=2.0.6"
+pyproj = ">=3.6"
+fiona = "1.9.*"
+gdal = "3.8.*"
+folium = ">=0.16"
+branca = ">=0.7"
+requests = ">=2.31"
+pandas = ">=2.0"
+matplotlib = ">=3.8"
+jupyterlab = ">=4"
+# rasterio = "1.3.*"
+# rtree = ">=1.4.1,<2"
+
+[tasks]
+
+# Interactive Environment Launchers
+lab = "jupyter lab 'PV_Systematic_TestRig-v3 copy.ipynb'"
+
+# Cleanup task running your Python script
+reset = "python reset.py"

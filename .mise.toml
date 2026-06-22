@@ -1,0 +1,20 @@
+[tools]
+python = "3.11"
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+
+[tasks.setup]
+description = "Install dependencies from requirements.txt"
+run = "pip install -r requirements.txt"
+
+[tasks.lab]
+description = "Launch the PV Systematic TestRig notebook"
+run = "jupyter lab PV_Systematic_TestRig.ipynb"
+
+[tasks.reset]
+description = "Clean generated artifacts via Python, then launch notebook"
+run = """
+python reset.py
+mise run lab
+"""
